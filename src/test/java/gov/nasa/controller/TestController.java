@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TestController {
     @Test
-    public void testExecuteInstructions(){
+    public void testExecuteInstructions() throws Exception {
         String input =  "5 5\n" +
                         "1 2 N\n" +
                         "LMLMLMLMM\n" +
@@ -18,5 +18,25 @@ public class TestController {
 
         String result = Controller.executeInstructions(input);
         assertEquals(output, result);
+    }
+
+    @Test (expected = Exception.class)
+    public void testRoverMovingOutsideThePlateau() throws Exception {
+        String input =  "5 5\n" +
+                        "4 4 N\n" +
+                        "MM\n";
+
+        Controller.executeInstructions(input);
+    }
+
+    @Test (expected = Exception.class)
+    public void testRoverPlacingOneRoverOverAnother() throws Exception {
+        String input =  "5 5\n" +
+                        "0 0 N\n" +
+                        "MM\n" +
+                        "0 2 N\n" +
+                        "MM\n";
+
+        Controller.executeInstructions(input);
     }
 }

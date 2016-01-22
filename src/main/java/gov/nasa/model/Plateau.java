@@ -2,17 +2,30 @@ package gov.nasa.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Plateau {
 
-    private int maxX;
-    private int maxY;
+    private int xLimit;
+    private int yLimit;
 
     private Map<String, Position> blockedPositions = new HashMap<>();
 
     public Plateau (Position corner){
-        this.maxX = corner.getX();
-        this.maxY = corner.getY();
+        this.xLimit = corner.getX();
+        this.yLimit = corner.getY();
+    }
+
+    public Plateau (String id) throws Exception {
+        Pattern pattern = Pattern.compile("\\s*([0-9]+)\\s+([0-9]+)\\s*");
+        Matcher matcher = pattern.matcher(id);
+        if (!matcher.matches()){
+            throw new Exception("Wrong id format");
+        }
+        this.xLimit = Integer.parseInt(matcher.group(1));
+        this.yLimit = Integer.parseInt(matcher.group(2));
+
     }
 
     public void placeObject (String id, Position position) throws Exception {
@@ -33,10 +46,19 @@ public class Plateau {
     }
 
     public boolean isInsideLimits (Position position){
-        return position.getX() <= maxX && position.getY() <= maxY;
+        return position.getX() <= xLimit && position.getY() <= yLimit;
     }
 
     public boolean isBlockedPosition (Position position){
         return blockedPositions.values().contains(position);
+    }
+
+
+    public int getxLimit() {
+        return xLimit;
+    }
+
+    public int getyLimit() {
+        return yLimit;
     }
 }
