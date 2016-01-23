@@ -4,8 +4,6 @@ import gov.nasa.model.common.Position;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Plateau {
 
@@ -14,20 +12,13 @@ public class Plateau {
 
     private Map<String, Position> blockedPositions = new HashMap<>();
 
-    public Plateau (Position corner){
+    public Plateau (Position corner) throws Exception {
         this.xLimit = corner.getX();
         this.yLimit = corner.getY();
-    }
 
-    public Plateau (String id) throws Exception {
-        Pattern pattern = Pattern.compile("\\s*([0-9]+)\\s+([0-9]+)\\s*");
-        Matcher matcher = pattern.matcher(id);
-        if (!matcher.matches()){
-            throw new Exception("Wrong id format");
+        if (xLimit < 0 || yLimit < 0){
+            throw new Exception("Plateau corner coordinates must be positive numbers");
         }
-        this.xLimit = Integer.parseInt(matcher.group(1));
-        this.yLimit = Integer.parseInt(matcher.group(2));
-
     }
 
     public void placeObject (String id, Position position) throws Exception {

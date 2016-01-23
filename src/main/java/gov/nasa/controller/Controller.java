@@ -3,9 +3,10 @@ package gov.nasa.controller;
 import gov.nasa.model.Plateau;
 import gov.nasa.model.Rover;
 import gov.nasa.model.common.Instruction;
+import gov.nasa.utils.InputUtils;
+import gov.nasa.utils.OutputUtils;
 import org.apache.log4j.Logger;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -13,42 +14,36 @@ public class Controller {
 
     private static Logger logger = Logger.getLogger(Controller.class);
 
-    public static String executeInstructions (String instructionsString) throws Exception {
-        String[] lines = instructionsString.split("\\n");
-        StringBuilder builder = new StringBuilder();
-        String newLine = "";
+    public static String executeInstructions (String input) throws Exception {
+        logger.debug("Received input: " + input);
 
-        Plateau plateau = new Plateau(lines[0]);
-        Map<Rover, Instruction> instructions = checkInstructions(lines);
+        // In order to avoid wasting time by transmitting malformed instructions, input is parsed by the controller
+        if (null == input) {throw new Exception("Null input received");}
 
-        int roverCount = 0;
-        for (Entry<Rover, Instruction> entry : instructions.entrySet()){
-            String roverId = "Rover " + roverCount++;
+        String[] inputLines = input.split("\\n");
+
+        // Plateau definition is in the first input line
+        Plateau plateau = InputUtils.parsePlateau(inputLines[0]);
+        // Then every rover and its associated instruction are parsed
+        Map<Rover, Instruction> instructions = InputUtils.parseInstructions(inputLines);
+
+        // It is assumed that every rover is already placed on the plateau, so the plateau model is set up with every
+        // rover on its starting position so it can be checked that their positions are valid ones
+        for (Rover rover : instructions.keySet()){
+            plateau.placeObject(rover.getId(), rover.getPosition());
+        }
+
+        // If the instructions and set up is valid the controller starts to send the instructions to the rovers
+        for (Entry<Rover, Instruction> entry : instructions.entrySet()) {
             Rover rover = entry.getKey();
             Instruction instruction = entry.getValue();
 
-            plateau.placeObject(roverId, rover.getPosition());
+            // After moving the rover its position is updated in the plateau model
             rover.executeInstruction(instruction);
-            plateau.placeObject(roverId, rover.getPosition());
-
-            builder.append(newLine).append(rover.getPositionAndFacingAsString());
-            newLine = "\n";
+            plateau.placeObject(rover.getId(), rover.getPosition());
         }
 
-        return builder.toString();
-    }
-
-
-    private static Map<Rover, Instruction> checkInstructions (String[] lines) throws Exception {
-        Map<Rover, Instruction> instructions = new LinkedHashMap<>();
-
-        int line = 1;
-        while (line < lines.length){
-            instructions.put(
-                    new Rover(lines[line++]),
-                    new Instruction(lines[line++]));
-        }
-
-        return instructions;
+        // Every rover final point is retrieved and written in the expected format
+        return OutputUtils.getRoversOutput(instructions.keySet());
     }
 }

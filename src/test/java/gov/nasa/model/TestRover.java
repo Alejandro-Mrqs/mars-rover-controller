@@ -61,6 +61,6 @@ public class TestRover {
     @Test
     public void testGetPositionAndFacingAsString(){
         Rover rover = new Rover(new Position(1,3), new Facing(CardinalPoint.N));
-        assertEquals("1 3 N", rover.getPositionAndFacingAsString());
+        assertEquals("1 3 N", rover.getRoverAsString());
     }
 }

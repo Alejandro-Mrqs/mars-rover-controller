@@ -1,6 +1,7 @@
 package gov.nasa.model;
 
 import gov.nasa.model.common.Position;
+import gov.nasa.utils.InputUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -8,33 +9,27 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class TestPlateau {
+
     @Test
-    public void testCreate() throws Exception {
-        Plateau plateau = new Plateau("4 7");
+    public void testCreate () throws Exception {
+        Plateau plateau = new Plateau(new Position(4, 7));
         assertEquals(4, plateau.getxLimit());
         assertEquals(7, plateau.getyLimit());
     }
 
-    @Test
-    public void testCreateRight() throws Exception {
-        Plateau plateau = new Plateau("17 3");
-        assertEquals(17, plateau.getxLimit());
-        assertEquals(3, plateau.getyLimit());
-    }
-
     @Test (expected = Exception.class)
-    public void testCreateWrong() throws Exception {
-        new Plateau("A 3");
+    public void createNegativePlateau () throws Exception {
+        new Plateau(new Position(-4, 7));
     }
 
     @Test
-    public void testPositionInsideLimits(){
+    public void testPositionInsideLimits() throws Exception {
         Plateau plateau = new Plateau(new Position(5,5));
         assertTrue(plateau.isValidPosition(new Position(2,5)));
     }
 
     @Test
-    public void testPositionOutsideLimits(){
+    public void testPositionOutsideLimits() throws Exception {
         Plateau plateau = new Plateau(new Position(5,5));
         assertFalse(plateau.isValidPosition(new Position(9,5)));
     }

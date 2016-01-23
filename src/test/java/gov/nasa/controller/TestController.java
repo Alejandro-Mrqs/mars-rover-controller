@@ -34,7 +34,7 @@ public class TestController {
         String input =  "5 5\n" +
                         "0 0 N\n" +
                         "MM\n" +
-                        "0 2 N\n" +
+                        "0 0 N\n" +
                         "MM\n";
 
         Controller.executeInstructions(input);
