@@ -1,5 +1,6 @@
 package gov.nasa.model;
 
+import gov.nasa.model.common.Position;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

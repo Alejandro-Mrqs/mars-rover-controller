@@ -1,5 +1,7 @@
 package gov.nasa.model;
 
+import gov.nasa.model.common.Position;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -46,7 +48,9 @@ public class Plateau {
     }
 
     public boolean isInsideLimits (Position position){
-        return position.getX() <= xLimit && position.getY() <= yLimit;
+        int x = position.getX();
+        int y = position.getY();
+        return x >=0 && x <= xLimit && y >= 0 && y <= yLimit;
     }
 
     public boolean isBlockedPosition (Position position){

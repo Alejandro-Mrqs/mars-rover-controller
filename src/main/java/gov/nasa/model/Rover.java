@@ -2,12 +2,14 @@ package gov.nasa.model;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import gov.nasa.model.Facing.CardinalPoint;
+
+import gov.nasa.model.common.Facing;
+import gov.nasa.model.common.Facing.CardinalPoint;
+import gov.nasa.model.common.Instruction;
+import gov.nasa.model.common.Instruction.Command;
+import gov.nasa.model.common.Position;
 
 public class Rover {
-    enum Command {
-        L,R,M
-    }
 
     private Position position;
     private Facing facing;
@@ -43,13 +45,8 @@ public class Rover {
         }
     }
 
-    public void executeCommands (String commands) throws Exception {
-        for (Character commandName : commands.toCharArray()){
-            Command command;
-            try {command = Command.valueOf(commandName.toString());}
-            catch (Exception exception){
-                throw new Exception("Unsupported command \"" + commandName + "\"");
-            }
+    public void executeInstruction (Instruction instruction){
+        for (Command command : instruction.getCommands()){
             executeCommand(command);
         }
     }

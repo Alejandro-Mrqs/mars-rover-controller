@@ -1,6 +1,7 @@
-package gov.nasa.model;
+package gov.nasa.model.common;
 
-import gov.nasa.model.Facing.CardinalPoint;
+import gov.nasa.model.common.Facing.CardinalPoint;
+import gov.nasa.model.common.Position;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

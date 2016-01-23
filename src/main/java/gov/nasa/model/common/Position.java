@@ -1,6 +1,6 @@
-package gov.nasa.model;
+package gov.nasa.model.common;
 
-import gov.nasa.model.Facing.CardinalPoint;
+import gov.nasa.model.common.Facing.CardinalPoint;
 
 public class Position {
     private int x;

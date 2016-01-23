@@ -1,7 +1,10 @@
 package gov.nasa.model;
 
-import gov.nasa.model.Rover.Command;
-import gov.nasa.model.Facing.CardinalPoint;
+import gov.nasa.model.common.Instruction;
+import gov.nasa.model.common.Instruction.Command;
+import gov.nasa.model.common.Facing;
+import gov.nasa.model.common.Facing.CardinalPoint;
+import gov.nasa.model.common.Position;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -48,9 +51,9 @@ public class TestRover {
     }
 
     @Test
-    public void testExecuteCommands() throws Exception {
+    public void testExecuteInstruction() throws Exception {
         Rover rover = new Rover(new Position(1,2), new Facing(CardinalPoint.N));
-        rover.executeCommands("LMLMLMLMM");
+        rover.executeInstruction(new Instruction("LMLMLMLMM"));
         assertEquals(new Position(1,3), rover.getPosition());
         assertEquals(new Facing(CardinalPoint.N), rover.getFacing());
     }

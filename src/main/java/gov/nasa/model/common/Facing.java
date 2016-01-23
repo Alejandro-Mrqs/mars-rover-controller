@@ -1,8 +1,8 @@
-package gov.nasa.model;
+package gov.nasa.model.common;
 
 public class Facing {
 
-    enum CardinalPoint {
+    public enum CardinalPoint {
         N ("north"), E ("east"), S ("south"), W ("west");
 
         String name;
