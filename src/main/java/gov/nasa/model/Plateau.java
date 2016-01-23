@@ -1,11 +1,14 @@
 package gov.nasa.model;
 
 import gov.nasa.model.common.Position;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Plateau {
+
+    private Logger logger = Logger.getLogger(this.getClass());
 
     private int xLimit;
     private int yLimit;
@@ -19,6 +22,7 @@ public class Plateau {
         if (xLimit < 0 || yLimit < 0){
             throw new Exception("Plateau corner coordinates must be positive numbers");
         }
+        logger.info((xLimit + 1) + "x" + (yLimit + 1) + " plateau created");
     }
 
     public void placeObject (String id, Position position) throws Exception {
@@ -31,6 +35,7 @@ public class Plateau {
         if (isBlockedPosition(position) && !(position == blockedPositions.get(id))){
             throw new Exception("There is already another object in the requested position");
         }
+        logger.debug("Object \"" + id + "\" placed on " + position);
         blockedPositions.put(id, position);
     }
 

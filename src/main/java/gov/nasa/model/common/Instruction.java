@@ -12,8 +12,13 @@ public class Instruction {
         Command (String description){
             this.description = description;
         }
+
+        public String getDescription() {
+            return description;
+        }
     }
 
+    private String instruction;
     private Command[] commands;
 
 
@@ -30,10 +35,16 @@ public class Instruction {
                 throw new Exception("Not supported command \"" + letter + "\"");
             }
         }
+        this.instruction = instruction;
     }
 
 
     public Command[] getCommands() {
         return commands;
+    }
+
+    @Override
+    public String toString() {
+        return instruction;
     }
 }

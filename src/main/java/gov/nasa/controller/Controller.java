@@ -24,7 +24,7 @@ public class Controller {
 
         // Plateau definition is in the first input line
         Plateau plateau = InputUtils.parsePlateau(inputLines[0]);
-        // Then every rover and its associated instruction are parsed
+        // Then every rover and its associated instruction is parsed
         Map<Rover, Instruction> instructions = InputUtils.parseInstructions(inputLines);
 
         // It is assumed that every rover is already placed on the plateau, so the plateau model is set up with every
@@ -33,17 +33,29 @@ public class Controller {
             plateau.placeObject(rover.getId(), rover.getPosition());
         }
 
-        // If the instructions and set up is valid the controller starts to send the instructions to the rovers
-        for (Entry<Rover, Instruction> entry : instructions.entrySet()) {
-            Rover rover = entry.getKey();
-            Instruction instruction = entry.getValue();
+        String errorMessage = "";
+        try {
+            // If the instructions and set up is valid the controller starts sending the instructions to the rovers
+            for (Entry<Rover, Instruction> entry : instructions.entrySet()) {
+                Rover rover = entry.getKey();
+                Instruction instruction = entry.getValue();
 
-            // After moving the rover its position is updated in the plateau model
-            rover.executeInstruction(instruction);
-            plateau.placeObject(rover.getId(), rover.getPosition());
+                // Before sending the instructions to a rover the environment is updated with any changes so it can be
+                // aware of the other rovers positions.
+                rover.updateEnvironment(plateau);
+                rover.executeInstruction(instruction);
+
+                // After moving the rover its position is updated in the plateau model
+                plateau.placeObject(rover.getId(), rover.getPosition());
+            }
+        }
+        // If any error occurred while executing the instructions the remaining instructions are interrupted but the
+        // positions of the rovers until that moment are returned and a message is sent with the error reason
+        catch (Exception exception){
+            errorMessage =  "\nERROR: " + exception.getMessage();
         }
 
         // Every rover final point is retrieved and written in the expected format
-        return OutputUtils.getRoversOutput(instructions.keySet());
+        return OutputUtils.getRoversOutput(instructions.keySet()) + errorMessage;
     }
 }

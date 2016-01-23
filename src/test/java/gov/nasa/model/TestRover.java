@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TestRover {
     @Test
-    public void testMove(){
+    public void testMove() throws Exception {
         Rover rover = new Rover(new Position(0,0), new Facing(CardinalPoint.N));
         rover.executeCommand(Command.M);
         rover.executeCommand(Command.M);
@@ -21,7 +21,7 @@ public class TestRover {
     }
 
     @Test
-    public void testTurnLeft(){
+    public void testTurnLeft() throws Exception {
         Rover rover = new Rover(new Position(0,0), new Facing(CardinalPoint.N));
         rover.executeCommand(Command.L);
         rover.executeCommand(Command.L);
@@ -31,7 +31,7 @@ public class TestRover {
     }
 
     @Test
-    public void testTurnRight(){
+    public void testTurnRight() throws Exception {
         Rover rover = new Rover(new Position(0,0), new Facing(CardinalPoint.N));
         rover.executeCommand(Command.R);
         rover.executeCommand(Command.R);
@@ -41,7 +41,7 @@ public class TestRover {
     }
 
     @Test
-    public void testMoveAndTurn(){
+    public void testMoveAndTurn() throws Exception {
         Rover rover = new Rover(new Position(0,0), new Facing(CardinalPoint.N));
         rover.executeCommand(Command.M);
         rover.executeCommand(Command.R);

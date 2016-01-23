@@ -3,6 +3,7 @@ package gov.nasa.controller;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestController {
     @Test
@@ -21,22 +22,42 @@ public class TestController {
     }
 
     @Test (expected = Exception.class)
+    public void testRoverPlacingOneRoverOverAnother() throws Exception {
+        String input =  "5 5\n" +
+                "0 0 N\n" +
+                "MM\n" +
+                "0 0 N\n" +
+                "MM\n";
+
+        Controller.executeInstructions(input);
+    }
+
+    @Test
     public void testRoverMovingOutsideThePlateau() throws Exception {
         String input =  "5 5\n" +
                         "4 4 N\n" +
                         "MM\n";
 
-        Controller.executeInstructions(input);
+        String output = "4 5 N\n" +
+                        "ERROR: ";
+
+        String result = Controller.executeInstructions(input);
+        assertTrue(result.startsWith(output));
     }
 
-    @Test (expected = Exception.class)
-    public void testRoverPlacingOneRoverOverAnother() throws Exception {
+    @Test
+    public void testRoverMovingOneRoverIntoAnother() throws Exception {
         String input =  "5 5\n" +
                         "0 0 N\n" +
                         "MM\n" +
-                        "0 0 N\n" +
+                        "0 2 N\n" +
                         "MM\n";
 
-        Controller.executeInstructions(input);
+        String output = "0 1 N\n" +
+                        "0 2 N\n" +
+                        "ERROR: ";
+
+        String result = Controller.executeInstructions(input);
+        assertTrue(result.startsWith(output));
     }
 }
